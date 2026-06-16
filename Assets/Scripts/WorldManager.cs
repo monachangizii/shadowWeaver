@@ -48,7 +48,7 @@ public class WorldManager : MonoBehaviour
         
     }
 
-    void UpdateWorldVisuals()
+    public void UpdateWorldVisuals()
     {
         if (mainCamera != null)
         {

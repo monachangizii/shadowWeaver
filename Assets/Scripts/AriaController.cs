@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 
 public class AriaController : MonoBehaviour
@@ -36,12 +36,30 @@ public class AriaController : MonoBehaviour
     {
         moveInput = Input.GetAxisRaw("Horizontal"); 
 
+       
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
 
+      
         UpdateState();
+
+       
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            SaveSystem.SaveGame(
+                transform.position.x, 
+                transform.position.y, 
+                WorldManager.Instance.isMirrorWorld, 
+                SceneManager.GetActiveScene().name
+            );
+        }
+
+        if (Input.GetKeyDown(KeyCode.F9))
+        {
+            LoadPlayerState();
+        }
     }
 
     void FixedUpdate()
@@ -83,5 +101,21 @@ public class AriaController : MonoBehaviour
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
+    }
+    void LoadPlayerState()
+    {
+         SaveData data = SaveSystem.LoadGame();
+        
+        rb.velocity = Vector2.zero;
+
+        transform.position = new Vector2(data.playerX, data.playerY + 0.1f);
+        
+        if (WorldManager.Instance != null)
+        {
+            WorldManager.Instance.isMirrorWorld = data.isMirrorWorld;
+            WorldManager.Instance.UpdateWorldVisuals(); 
+        }
+        
+        Debug.Log("[AriaController] Player position and world state restored successfully.");
     }
 }
