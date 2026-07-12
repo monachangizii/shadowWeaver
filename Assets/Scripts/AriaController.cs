@@ -62,7 +62,7 @@ public class AriaController : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+        void FixedUpdate()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
@@ -70,11 +70,11 @@ public class AriaController : MonoBehaviour
 
         if (moveInput > 0)
         {
-            transform.localScale = new Vector3(0.5f, 1f, 1f); 
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
         else if (moveInput < 0)
         {
-            transform.localScale = new Vector3(-0.5f, 1f, 1f); 
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
     }
 
