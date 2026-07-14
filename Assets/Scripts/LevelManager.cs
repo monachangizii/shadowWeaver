@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -23,6 +20,7 @@ public class LevelManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
             
             Canvas canvas = GetComponentInParent<Canvas>();
             if (canvas != null)
@@ -30,20 +28,17 @@ public class LevelManager : MonoBehaviour
                 DontDestroyOnLoad(canvas.gameObject);
             }
             
-            DontDestroyOnLoad(gameObject);
-            
             // ثبت رویداد تغییر صحنه
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else
         {
+            Destroy(gameObject);
             Canvas canvas = GetComponentInParent<Canvas>();
-            if (canvas != null && canvas.gameObject != Instance.GetComponentInParent<Canvas>().gameObject)
+            if (canvas != null)
             {
                 Destroy(canvas.gameObject);
             }
-            Destroy(gameObject);
-            return;
         }
     }
 
@@ -54,44 +49,20 @@ public class LevelManager : MonoBehaviour
         currentLevel = scene.buildIndex;
         Debug.Log("[LevelManager] Scene loaded: " + scene.name + " (buildIndex: " + currentLevel + ")");
         
-        // پیدا کردن UI در صحنه جدید
-        FindUIElements();
-        
         // نمایش پیام شروع Level
         StartCoroutine(ShowLevelMessage());
     }
 
     void Start()
     {
-        // فقط برای اولین صحنه (Level1)
+        // فقط برای اولین صحنه
         currentLevel = SceneManager.GetActiveScene().buildIndex;
-        FindUIElements();
         StartCoroutine(ShowLevelMessage());
-    }
-
-    void FindUIElements()
-    {
-        if (levelCompletePanel == null)
-        {
-            levelCompletePanel = GameObject.Find("LevelCompletePanel");
-        }
-        if (levelText == null)
-        {
-            Text[] texts = FindObjectsOfType<Text>();
-            foreach (Text t in texts)
-            {
-                if (t.name == "LevelText")
-                {
-                    levelText = t;
-                    break;
-                }
-            }
-        }
     }
 
     IEnumerator ShowLevelMessage()
     {
-        yield return new WaitForSeconds(0.1f); // صبر کوتاه برای اطمینان از لود کامل UI
+        yield return new WaitForSeconds(0.1f);
         
         if (levelCompletePanel != null && levelText != null)
         {
@@ -102,10 +73,6 @@ public class LevelManager : MonoBehaviour
             
             levelCompletePanel.SetActive(false);
         }
-        else
-        {
-            Debug.LogError("[LevelManager] UI elements are null! Cannot show level message.");
-        }
     }
 
     public void CompleteLevel()
@@ -113,7 +80,6 @@ public class LevelManager : MonoBehaviour
         Debug.Log("[LevelManager] Level " + (currentLevel + 1) + " completed!");
         Debug.Log("[LevelManager] Current buildIndex: " + currentLevel);
         
-        FindUIElements();
         StartCoroutine(ShowCompleteMessageAndLoadNext());
     }
 
@@ -124,57 +90,63 @@ public class LevelManager : MonoBehaviour
             levelText.text = "Level Complete!";
             levelCompletePanel.SetActive(true);
             
-            Debug.Log("[LevelManager] Showing 'Level Complete!' message");
-            
             yield return new WaitForSeconds(completeMessageDuration);
             
             levelCompletePanel.SetActive(false);
-            
             yield return new WaitForSeconds(0.5f);
-            
-            int nextLevel = currentLevel + 1;
-            
-            Debug.Log("[LevelManager] Next level to load: " + nextLevel);
-            
-            if (nextLevel < SceneManager.sceneCountInBuildSettings)
+        }
+        
+        int nextLevel = currentLevel + 1;
+        
+        Debug.Log("[LevelManager] Next level to load: " + nextLevel);
+        
+        if (nextLevel < SceneManager.sceneCountInBuildSettings)
+        {
+            Debug.Log("[LevelManager] Loading Level " + (nextLevel + 1));
+            SceneManager.LoadScene(nextLevel);
+        }
+        else
+        {
+            Debug.Log("[LevelManager] Game Complete!");
+            if (levelText != null)
             {
-                Debug.Log("[LevelManager] Loading Level " + (nextLevel + 1));
-                SceneManager.LoadScene(nextLevel);
-            }
-            else
-            {
-                Debug.Log("[LevelManager] Game Complete! All levels finished.");
                 levelText.text = "Game Complete!";
                 levelCompletePanel.SetActive(true);
             }
         }
-        else
+    }
+
+    public void GameOver()
+    {
+        Debug.Log("[LevelManager] Game Over! Restarting Level " + (currentLevel + 1));
+        
+        StartCoroutine(ShowGameOverAndRestart());
+    }
+
+    IEnumerator ShowGameOverAndRestart()
+    {
+        if (levelCompletePanel != null && levelText != null)
         {
-            Debug.LogError("[LevelManager] UI elements are null! Cannot show complete message.");
-            int nextLevel = currentLevel + 1;
-            if (nextLevel < SceneManager.sceneCountInBuildSettings)
-            {
-                SceneManager.LoadScene(nextLevel);
-            }
+            levelText.text = "Game Over!";
+            levelCompletePanel.SetActive(true);
+            
+            yield return new WaitForSeconds(2f);
+            
+            levelCompletePanel.SetActive(false);
+            yield return new WaitForSeconds(0.5f);
         }
+        
+        RestartLevel();
     }
 
     public void RestartLevel()
     {
-        Debug.Log("[LevelManager] Restarting Level " + (currentLevel + 1));
         SceneManager.LoadScene(currentLevel);
-    }
-
-    public void GoToLevel(int levelNumber)
-    {
-        if (levelNumber >= 0 && levelNumber < SceneManager.sceneCountInBuildSettings)
-        {
-            SceneManager.LoadScene(levelNumber);
-        }
     }
 
     void OnDestroy()
     {
+        // حذف رویداد وقتی LevelManager از بین می‌رود
         if (Instance == this)
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
