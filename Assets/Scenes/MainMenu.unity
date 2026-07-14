@@ -955,18 +955,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 559107210}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 2.85861}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1872337469}
-  m_Father: {fileID: 1279207290}
+  m_Father: {fileID: 892710176}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -315, y: 0}
+  m_AnchoredPosition: {x: -381.5785, y: 10.254913}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &559107212
@@ -1013,7 +1013,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 708673594}
+      - m_Target: {fileID: 708673596}
         m_TargetAssemblyTypeName: MusicManager, Assembly-CSharp
         m_MethodName: ToggleMusic
         m_Mode: 1
@@ -1072,8 +1072,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 708673593}
-  - component: {fileID: 708673594}
   - component: {fileID: 708673595}
+  - component: {fileID: 708673596}
   m_Layer: 0
   m_Name: MusicManager
   m_TagString: Untagged
@@ -1097,21 +1097,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &708673594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 708673592}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b13f691b4c0d1eb488501a8c6cae5566, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  soundOn: {fileID: 0}
-  soundOff: {fileID: 0}
-  buttonImage: {fileID: 0}
 --- !u!82 &708673595
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1126,7 +1111,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1208,6 +1193,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &708673596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708673592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b13f691b4c0d1eb488501a8c6cae5566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundOn: {fileID: 0}
+  soundOff: {fileID: 0}
+  buttonImage: {fileID: 0}
 --- !u!1 &856780857
 GameObject:
   m_ObjectHideFlags: 0
@@ -1511,6 +1511,7 @@ Transform:
   - {fileID: 457516212}
   - {fileID: 442999504}
   - {fileID: 1547371588}
+  - {fileID: 559107211}
   m_Father: {fileID: 1279207290}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1880,7 +1881,6 @@ RectTransform:
   - {fileID: 892710176}
   - {fileID: 1790835723}
   - {fileID: 1949877863}
-  - {fileID: 559107211}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2932,8 +2932,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84752ea44066a9a4a863b8902a80ad33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenuPanel: {fileID: 0}
-  levelSelectPanel: {fileID: 0}
+  mainMenuPanel: {fileID: 892710175}
+  levelSelectPanel: {fileID: 1790835722}
   gameSceneName: MainScene
 --- !u!1 &1872337468
 GameObject:
