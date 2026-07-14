@@ -2,24 +2,21 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// این اسکریپت رو روی یه GameObject خالی تو صحنه MainMenu بذار (مثلا اسمش رو بذار "MenuManager")
-/// و بعد رفرنس‌های زیر رو تو Inspector پر کن.
 /// </summary>
 public class MainMenuManager : MonoBehaviour
 {
     [Header("Panels")]
-    public GameObject mainMenuPanel;      // پنلی که شامل دکمه‌های Play / Level Select / Quit هست
-    public GameObject levelSelectPanel;   // همون LevelSelectPanel که تو صحنه داری
+    public GameObject mainMenuPanel;      
+    public GameObject levelSelectPanel;   
 
     [Header("Scene Loading")]
-    public string gameSceneName = "MainScene"; // اسم صحنه‌ی اصلی بازی که با Play باز میشه
+    public string gameSceneName = "MainScene"; 
 
     private void Start()
     {
         ShowMainMenu();
     }
 
-    // ---------- دکمه‌های منوی اصلی ----------
 
     public void OnPlayButton()
     {
@@ -28,10 +25,6 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnNewGameButton()
     {
-        // اگه سیستم Save/Load داری (مثلا کلاس SaveSystem)، اینجا باید
-        // متد پاک کردن یا ریست کردن سیو رو صدا بزنی، مثلا:
-        // SaveSystem.DeleteSave();
-        // یا: SaveSystem.ResetProgress();
 
         SceneManager.LoadScene(gameSceneName);
     }
@@ -52,21 +45,17 @@ public class MainMenuManager : MonoBehaviour
 #endif
     }
 
-    // ---------- دکمه‌های داخل پنل Level Select ----------
 
     public void OnBackButton()
     {
         ShowMainMenu();
     }
 
-    // این متد رو می‌تونی به هر دکمه‌ی مرحله وصل کنی و شماره مرحله رو بدی
     public void OnLevelSelected(int levelIndex)
     {
-        // مثلا هر مرحله یه صحنه جدا باشه: "Level1", "Level2", ...
         SceneManager.LoadScene("Level" + levelIndex);
     }
 
-    // ---------- توابع کمکی برای سوییچ بین پنل‌ها ----------
 
     private void ShowMainMenu()
     {
